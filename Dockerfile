@@ -1,3 +1,4 @@
-FROM mongo
+FROM mongo:latest
 COPY Sera/ /data/dump/Sera
-CMD mongorestore /data/dump/
+COPY entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["entrypoint.sh"]
