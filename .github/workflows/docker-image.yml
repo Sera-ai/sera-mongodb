@@ -1,0 +1,17 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Log in to GitHub Container Registry
+      run: echo ${{ secrets.ACTIONS_IMAGE_SECRET }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t ghcr.io/sera-ai/sera-db-mongo:latest .
+        docker push ghcr.io/sera-ai/sera-db-mongo:latest
