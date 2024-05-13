@@ -36,4 +36,21 @@ mongod --shutdown
 
 # Start MongoDB in the foreground
 echo "Starting MongoDB in the foreground..."
-exec mongod --fork --logpath "$MONGO_LOG_PATH" --bind_ip "$MONGO_BIND_IP"
+exec mongod --replSet rs0 --fork --logpath "$MONGO_LOG_PATH" --bind_ip "$MONGO_BIND_IP"
+
+# Initiate the replica set
+mongo --port 27017 <<EOF
+rs.initiate({
+    _id: "rs0",
+    members: [
+        { _id: 0, host: "localhost:27017" }
+    ]
+});
+EOF
+
+# Check the status of the replica set
+mongo --port 27017 <<EOF
+rs.status();
+EOF
+
+echo "Replica set initiated and status checked."
