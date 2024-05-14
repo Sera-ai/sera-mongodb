@@ -6,6 +6,8 @@ MONGO_URI="mongodb+srv://sera-user:4048WWDfkhORZ0Qo@sera.kloehqy.mongodb.net"
 MONGO_DUMP_PATH="/data/dump"
 MONGO_LOG_PATH="/var/log/mongod.log"
 MONGO_BIND_IP="0.0.0.0"
+REPLICA_SET_NAME="rs0"
+MONGO_PORT=27017
 
 # Function to wait for MongoDB to become available
 wait_for_mongo() {
@@ -15,12 +17,21 @@ wait_for_mongo() {
     done
 }
 
-# Start local MongoDB in the background
 echo "Starting MongoDB in the background..."
-mongod --fork --logpath "$MONGO_LOG_PATH" --bind_ip "$MONGO_BIND_IP"
+mongod --fork --logpath "$MONGO_LOG_PATH" --bind_ip "$MONGO_BIND_IP" --replSet "$REPLICA_SET_NAME" --port $MONGO_PORT
 
 # Wait for MongoDB to be available
 wait_for_mongo
+
+# Initialize the replica set
+echo "Initializing the replica set..."
+mongo --eval "rs.initiate()"
+
+# Wait for the replica set to be fully initialized
+until mongo --eval "rs.status()" | grep -q "stateStr"; do
+    echo "Waiting for replica set to initialize..."
+    sleep 2
+done
 
 # Dump data from the external MongoDB instance
 echo "Cloning data from the external MongoDB instance..."
@@ -30,10 +41,5 @@ mongodump --uri="$MONGO_URI" --out="$MONGO_DUMP_PATH"
 echo "Restoring the cloned data to the local MongoDB instance..."
 mongorestore --drop --dir="$MONGO_DUMP_PATH"
 
-# Stop the local MongoDB server
-echo "Shutting down the background MongoDB..."
-mongod --shutdown
-
-# Start MongoDB in the foreground
-echo "Starting MongoDB in the foreground..."
-exec mongod --fork --logpath "$MONGO_LOG_PATH" --bind_ip "$MONGO_BIND_IP"
+# Indicate completion
+echo "MongoDB setup script completed."
