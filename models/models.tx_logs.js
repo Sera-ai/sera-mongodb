@@ -19,6 +19,10 @@ const dataSchema = new mongoose.Schema(
             required: true,
             type: Number
         },
+        ts_breakdown: {
+            required: false,
+            type: Object,
+        },
         method: {
             required: true,
             type: String
