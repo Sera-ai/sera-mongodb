@@ -8,6 +8,7 @@ MONGO_LOG_PATH="/var/log/mongod.log"
 MONGO_BIND_IP="0.0.0.0"
 REPLICA_SET_NAME="rs0"
 MONGO_PORT=27017
+DATABASE_NAME="nginx"
 
 # Function to wait for MongoDB to become available
 wait_for_mongo() {
@@ -43,7 +44,7 @@ mongorestore --drop --dir="$MONGO_DUMP_PATH"
 
 # Create the "nginx" database and a collection in it
 echo "Creating the database named 'nginx'..."
-mongo --eval "use nginx; db.createCollection('tx_logs');"
+mongo --eval "db = db.getSiblingDB('$DATABASE_NAME'); db.createCollection('init_collection');"
 
 # Indicate completion
 echo "MongoDB setup script completed."
