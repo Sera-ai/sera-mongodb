@@ -19,6 +19,10 @@ const dataSchema = new mongoose.Schema(
       required: false,
       type: Array,
     },
+    systemSettings: {
+      required: false,
+      type: Object,
+    },
   },
   { collection: "sera_settings", strict: false }
 );
