@@ -19,6 +19,10 @@ const dataSchema = new mongoose.Schema({
   method: {
     required: true,
     type: String,
+  },
+  attributes: {
+    required: true,
+    type: Array
   }
 });
 
