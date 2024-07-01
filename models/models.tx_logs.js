@@ -23,6 +23,10 @@ const dataSchema = new mongoose.Schema(
             required: false,
             type: Object,
         },
+        ssl_analytics: {
+            required: false,
+            type: Object,
+        },
         session_analytics: {
             required: false,
             type: Object,
