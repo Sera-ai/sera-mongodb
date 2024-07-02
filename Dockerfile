@@ -41,4 +41,4 @@ ENV SSL_COMMON_NAME="localhost"
 EXPOSE 27017
 
 RUN sed -i 's/\r$//' ./sera-db-mongo/entrypoint.sh
-RUN chmod +x ./.devcontainer/entrypoint.sh ./sera-db-mongo/entrypoint.sh
+RUN chmod +x ./sera-db-mongo/entrypoint.sh
