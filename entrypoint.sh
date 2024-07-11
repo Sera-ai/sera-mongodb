@@ -12,7 +12,7 @@ DATABASE_NAME="nginx"
 
 # Function to wait for MongoDB to become available
 wait_for_mongo() {
-    until mongo --eval "print('MongoDB is up')" >/dev/null 2>&1; do
+    until mongosh --eval "print('MongoDB is up')" >/dev/null 2>&1; do
         echo "Waiting for MongoDB to start..."
         sleep 2
     done
@@ -26,10 +26,10 @@ wait_for_mongo
 
 # Initialize the replica set
 echo "Initializing the replica set..."
-mongo --eval "rs.initiate()"
+mongosh --eval "rs.initiate()"
 
 # Wait for the replica set to be fully initialized
-until mongo --eval "rs.status()" | grep -q "stateStr"; do
+until mongosh --eval "rs.status()" | grep -q "stateStr"; do
     echo "Waiting for replica set to initialize..."
     sleep 2
 done
@@ -44,7 +44,7 @@ mongorestore --drop --dir="$MONGO_DUMP_PATH"
 
 # Create the "nginx" database and a collection in it
 echo "Creating the database named 'nginx'..."
-mongo --eval "db = db.getSiblingDB('$DATABASE_NAME'); db.createCollection('init_collection');"
+mongosh --eval "db = db.getSiblingDB('$DATABASE_NAME'); db.createCollection('init_collection');"
 
 # Indicate completion
 echo "MongoDB setup script completed."
