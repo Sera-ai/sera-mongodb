@@ -12,6 +12,9 @@ jobs:
     - name: Log in to GitHub Container Registry
       run: echo ${{ secrets.ACTIONS_IMAGE_SECRET }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
     - name: Build and Push Docker Image
-      run: |
-        docker build -t ghcr.io/sera-ai/sera-mongodb:latest .
-        docker push ghcr.io/sera-ai/sera-mongodb:latest
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ghcr.io/sera-ai/sera-mongodb:latest
