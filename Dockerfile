@@ -1,5 +1,5 @@
 # Stage 1: Install MongoDB in a separate stage
-FROM mongod:latest
+FROM mongo:latest
 
 
 # Create MongoDB data directory
