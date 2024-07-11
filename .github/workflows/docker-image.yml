@@ -14,4 +14,4 @@ jobs:
     - name: Build and Push Docker Image
       run: |
         docker build -t ghcr.io/sera-ai/sera-db-mongo:latest .
-        docker push ghcr.io/sera-ai/sera-db-mongo:latest
+        docker push ghcr.io/sera-ai/sera-mongodb:latest
