@@ -42,9 +42,5 @@ mongodump --uri="$MONGO_URI" --out="$MONGO_DUMP_PATH"
 echo "Restoring the cloned data to the local MongoDB instance..."
 mongorestore --drop --dir="$MONGO_DUMP_PATH"
 
-# Create the "nginx" database and a collection in it
-echo "Creating the database named 'nginx'..."
-mongosh --eval "db = db.getSiblingDB('$DATABASE_NAME'); db.createCollection('init_collection');"
-
 # Indicate completion
 echo "MongoDB setup script completed."
