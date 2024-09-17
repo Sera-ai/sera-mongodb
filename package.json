@@ -1,7 +1,4 @@
 {
-  "workspaces": [
-    "/shared-node-modules"
-  ],
   "dependencies": {
     "mongoose": "^7.7.0"
   }
